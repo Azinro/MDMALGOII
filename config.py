@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Ini akan membaca file .env
 
 # --- Konfigurasi File ---
 CSV_MAHASISWA = "data/mahasiswa.csv"
@@ -7,8 +10,8 @@ CSV_USERS = "data/users.csv"
 # --- Konfigurasi Email ---
 EMAIL_SMTP_SERVER = "smtp.gmail.com"
 EMAIL_SMTP_PORT = 587
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "default_email@gmail.com")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "default_password")
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 # --- Inisialisasi Folder Data ---
 os.makedirs("data", exist_ok=True)
