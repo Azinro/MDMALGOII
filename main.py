@@ -1,6 +1,6 @@
 import time
 import os
-from nicegui import ui
+from nicegui import ui,run
 from models.user import User
 from models.data_manager import DataManager
 from models.mahasiswa import Mahasiswa
@@ -382,12 +382,20 @@ def email_page():
         ui.label('Form Email').classes('text-xl font-bold mb-4')
         email_penerima = ui.input('Alamat Email Penerima').classes('w-full')
 
-        def send_email():
+        # --- KODE BARU (ASYNCHRONOUS) ---
+        async def send_email():  # 1. Tambah 'async' di depan def
             if not email_penerima.value:
                 ui.notify('Silakan masukkan alamat email penerima.', type='negative')
                 return
+            
+            # Kasih notifikasi biar user tau lagi proses
+            ui.notify('Sedang mengirim email... Mohon tunggu.', type='info', spinner=True)
+            
             try:
-                send_data_via_email(email_penerima.value, CSV_MAHASISWA)
+                # 2. Pindahkan proses berat ke background thread pakai run.io_bound
+                # Ini kuncinya biar "Connection Lost" hilang
+                await run.io_bound(send_data_via_email, email_penerima.value, CSV_MAHASISWA)
+                
                 ui.notify('Email berhasil dikirim!', type='positive')
                 ui.navigate.to('/dashboard')
             except Exception as e:
