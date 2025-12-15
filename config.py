@@ -9,7 +9,7 @@ CSV_USERS = "data/users.csv"
 
 # --- Konfigurasi Email ---
 EMAIL_SMTP_SERVER = "smtp.gmail.com"
-EMAIL_SMTP_PORT = 587
+EMAIL_SMTP_PORT = 465
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
