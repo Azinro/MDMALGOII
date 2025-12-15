@@ -1,4 +1,5 @@
 import time
+import os
 from nicegui import ui
 from models.user import User
 from models.data_manager import DataManager
@@ -398,4 +399,9 @@ def email_page():
 
 # --- Jalankan Aplikasi ---
 if __name__ in {"__main__", "__mp_main__"}:
-    ui.run(title='Manajemen Data Mahasiswa', reload=False)
+    ui.run(
+        host='0.0.0.0', # Harus 0.0.0.0 biar bisa diakses publik
+        port=int(os.environ.get('PORT', 8080)), # Ambil PORT dari Railway
+        title='Aplikasi Keren Zetka',
+        favicon='🚀'
+    )

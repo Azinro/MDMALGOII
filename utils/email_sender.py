@@ -1,4 +1,5 @@
 import smtplib
+import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -7,11 +8,26 @@ import pandas as pd
 from config import EMAIL_SMTP_SERVER, EMAIL_SMTP_PORT, EMAIL_ADDRESS, EMAIL_PASSWORD
 
 def send_data_via_email(to_email: str, csv_file_path: str, subject: str = "Data Mahasiswa"):
+    # 1. CEK APAKAH CSV ADA
+    if not os.path.exists(csv_file_path):
+        raise FileNotFoundError(f"File CSV tidak ditemukan di: {csv_file_path}")
+    
     msg = MIMEMultipart()
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = to_email
     msg['Subject'] = subject
 
+    try:
+        df = pd.read_csv(csv_file_path)
+        # Simpan xlsx di folder yang sama dengan csv
+        excel_path = os.path.splitext(csv_file_path)[0] + '.xlsx'
+        
+        # Wajib punya openpyxl
+        df.to_excel(excel_path, index=False, engine='openpyxl') 
+    except Exception as e:
+        raise Exception(f"Gagal convert ke Excel. Pastikan 'openpyxl' terinstall. Error: {e}")
+    
+    
     body = "Terlampir data mahasiswa dalam format Excel."
     msg.attach(MIMEText(body, 'plain'))
 
