@@ -19,25 +19,21 @@ app_state = AppState()
 # --- FUNGSI BACKGROUND (Baru) ---
 def set_background():
     """Mengatur background image + overlay transparan untuk halaman"""
-    # 1. Layer Gambar (Paling Belakang: z-20)
-    # Ganti URL di bawah dengan path file lokal lu (misal: 'assets/bg.jpg') kalau mau
+
     url_gambar = 'static/bg.jpg'
     ui.image(url_gambar).classes('fixed inset-0 w-full h-full object-cover -z-20')
-    
-    # 2. Layer Overlay Hitam (Di atas gambar, di bawah konten: z-10)
-    # bg-black/60 artinya warna hitam dengan opacity 60%. Bisa lu ganti /50 atau /70 sesuai selera.
     ui.element('div').classes('fixed inset-0 w-full h-full bg-black/60 -z-10')
 
 # --- Halaman Login ---
 @ui.page('/')
 def login_page():
-    set_background() # <--- Panggil fungsi background disini
+    set_background()
 
     if app_state.current_user:
         ui.navigate.to('/dashboard')
         return
 
-    # Sedikit styling transparan di card login biar nyatu sama background
+    # styling transparan di card login biar nyatu sama background
     with ui.card().classes('w-96 mx-auto mt-20 bg-white/90 backdrop-blur-sm shadow-xl'):
         ui.label('Login').classes('text-2xl font-bold text-center w-full mb-4')
         username = ui.input('Username').props('dense outlined').classes('w-full')
@@ -56,7 +52,7 @@ def login_page():
 # --- Halaman Dashboard ---
 @ui.page('/dashboard')
 def dashboard_page():
-    set_background() # Pastiin fungsi ini masih ada di atas ya
+    set_background()
 
     if not app_state.current_user:
         ui.navigate.to('/')
@@ -87,10 +83,10 @@ def dashboard_page():
             ui.label(f'NON-AKTIF: {non_aktif}').classes('font-bold')
 
     # --- BAR UTAMA ---
-    # Container Biru Besar
+    # Biru Besar
     with ui.row().classes('w-full bg-[#0047AB]/90 backdrop-blur-md rounded-3xl p-5 justify-between items-start text-white shadow-xl border border-white/20'):
         
-        # === BAGIAN KIRI (Search & Time) === TETAP (Gede & Jelas)
+        # === BAGIAN KIRI (Search & Time) === TETAP
         with ui.column().classes('gap-1'):
             with ui.row().classes('items-center gap-4 h-12'):
                 ui.label('Cari berdasarkan').classes('font-bold text-lg')
@@ -101,7 +97,7 @@ def dashboard_page():
                 ui.label('Time :').classes('font-bold text-sm')
                 time_display = ui.label('0.00 ms').classes('font-bold text-sm text-yellow-300')
 
-        # === BAGIAN TENGAH (Sort) === TETAP (Gede & Jelas)
+        # === BAGIAN TENGAH (Sort) === TETAP
         with ui.row().classes('items-center gap-4 h-12'): 
             ui.label('Urut berdasarkan').classes('font-bold text-lg')
             sort_by_state = ui.select([
@@ -109,7 +105,6 @@ def dashboard_page():
             ], value='Nama').classes('bg-white text-black rounded w-40 no-shadow text-base').props('outlined dense options-dense behavior="menu"')
 
         # === BAGIAN KANAN (Buttons) === 
-        # Gap-2 biar jarak atas-bawah rapet
         with ui.column().classes('gap-2 pt-1'): 
             # Tombol Email
             if app_state.current_user.role == 'admin':
@@ -117,9 +112,7 @@ def dashboard_page():
                 ui.button('Send to Email', on_click=lambda: ui.navigate.to('/email')).props('color=deep-purple-7 unelevated').classes('w-72 rounded-full font-bold shadow-lg')
             
             # Tombol Action
-            # FIX 2: Ganti w-64 jadi w-72 juga, biar sejajar sama tombol email
             with ui.row().classes('w-72 justify-between'):
-                # Padding px-4 (dikecilin dikit dari 5 biar DELETE gak sesak)
                 if app_state.current_user.role == 'admin':
                     ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).props('color=positive unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
                     ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=warning unelevated').classes('rounded-full font-bold px-4 text-white text-sm shadow-lg')
@@ -211,7 +204,7 @@ def add_page():
         ui.navigate.to('/dashboard') # Alihkan ke dashboard
         return
 
-    set_background() # Panggil background biar konsisten
+    set_background()
 
     if not app_state.current_user:
         ui.navigate.to('/')
@@ -393,8 +386,8 @@ def email_page():
         ui.label('Form Email').classes('text-xl font-bold mb-4')
         email_penerima = ui.input('Alamat Email Penerima').classes('w-full')
 
-        # --- KODE BARU (ASYNCHRONOUS) ---
-        async def send_email():  # 1. Tambah 'async' di depan def
+        # --- ASYNCHRONOUS ---
+        async def send_email(): 
             if not email_penerima.value:
                 ui.notify('Silakan masukkan alamat email penerima.', type='negative')
                 return
@@ -419,8 +412,8 @@ def email_page():
 # --- Jalankan Aplikasi ---
 if __name__ in {"__main__", "__mp_main__"}:
     ui.run(
-        host='0.0.0.0', # Harus 0.0.0.0 biar bisa diakses publik
-        port=int(os.environ.get('PORT', 8080)), # Ambil PORT dari Railway
-        title='Aplikasi Keren Zetka',
+        host='0.0.0.0', 
+        port=int(os.environ.get('PORT', 8080)), 
+        title='Aplikasi Manajemen Data',
         favicon='🚀'
     )
