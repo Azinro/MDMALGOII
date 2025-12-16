@@ -110,18 +110,17 @@ def dashboard_page():
 
         # === BAGIAN KANAN (Buttons) === 
         # Gap-2 biar jarak atas-bawah rapet
-            # Tombol Send to Email & Add/Edit/Delete
-        with ui.column().classes('gap-2'):
+        with ui.column().classes('gap-2 pt-1'): 
+            # Tombol Email
             if app_state.current_user.role == 'admin':
-                ui.button('Send to Email', on_click=lambda: ui.navigate.to('/email')).classes('w-full')
-                ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).classes('w-full')
-                ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).classes('w-full')
-                ui.button('DELETE', on_click=lambda: ui.navigate.to('/edit_delete')).classes('w-full')
+                # FIX 1: Ganti w-64 jadi w-72 biar lebih lebar dikit
+                ui.button('Send to Email', on_click=lambda: ui.navigate.to('/email')).props('color=deep-purple-7 unelevated').classes('w-72 rounded-full font-bold shadow-lg')
             
             # Tombol Action
             # FIX 2: Ganti w-64 jadi w-72 juga, biar sejajar sama tombol email
             with ui.row().classes('w-72 justify-between'):
                 # Padding px-4 (dikecilin dikit dari 5 biar DELETE gak sesak)
+                if app_state.current_user.role == 'admin':
                 ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).props('color=positive unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
                 ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=warning unelevated').classes('rounded-full font-bold px-4 text-white text-sm shadow-lg')
                 ui.button('DELETE', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=negative unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
