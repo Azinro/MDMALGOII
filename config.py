@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Ini akan membaca file .env
+load_dotenv()  
 
 # --- Konfigurasi File ---
 CSV_MAHASISWA = "data/mahasiswa.csv"

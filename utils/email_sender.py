@@ -13,7 +13,7 @@ from config import EMAIL_SMTP_SERVER, EMAIL_SMTP_PORT, EMAIL_ADDRESS, EMAIL_PASS
 def log_debug(msg):
     print(f"[EMAIL DEBUG] {msg}", file=sys.stdout, flush=True)
 
-# --- FIX IPv4 (JANGAN DIHAPUS) ---
+# --- FIX IPv4 ---
 def force_ipv4_socket():
     old_getaddrinfo = socket.getaddrinfo
     def new_getaddrinfo(*args, **kwargs):
@@ -55,14 +55,13 @@ def send_data_via_email(to_email: str, csv_file_path: str, subject: str = "Data 
         part.add_header('Content-Disposition', f'attachment; filename=Data_Mahasiswa.xlsx')
         msg.attach(part)
 
-    # --- BAGIAN INI BEDA DARI YANG TADI ---
     try:
         log_debug(f"Menghubungi Gmail pakai SSL (Port 465)...")
         
-        # PAKE SMTP_SSL (Bukan SMTP biasa)
+        # PAKE SMTP_SSL
         server = smtplib.SMTP_SSL(EMAIL_SMTP_SERVER, EMAIL_SMTP_PORT, timeout=30)
         
-        # HAPUS server.starttls() -> GAK PERLU DI PORT 465
+        # HAPUS server.starttls()
         
         log_debug("Mencoba Login...")
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)

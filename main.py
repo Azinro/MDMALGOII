@@ -110,11 +110,13 @@ def dashboard_page():
 
         # === BAGIAN KANAN (Buttons) === 
         # Gap-2 biar jarak atas-bawah rapet
-        with ui.column().classes('gap-2 pt-1'): 
-            # Tombol Email
+            # Tombol Send to Email & Add/Edit/Delete
+        with ui.column().classes('gap-2'):
             if app_state.current_user.role == 'admin':
-                # FIX 1: Ganti w-64 jadi w-72 biar lebih lebar dikit
-                ui.button('Send to Email', on_click=lambda: ui.navigate.to('/email')).props('color=deep-purple-7 unelevated').classes('w-72 rounded-full font-bold shadow-lg')
+                ui.button('Send to Email', on_click=lambda: ui.navigate.to('/email')).classes('w-full')
+                ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).classes('w-full')
+                ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).classes('w-full')
+                ui.button('DELETE', on_click=lambda: ui.navigate.to('/edit_delete')).classes('w-full')
             
             # Tombol Action
             # FIX 2: Ganti w-64 jadi w-72 juga, biar sejajar sama tombol email
@@ -205,6 +207,11 @@ def logout():
 # --- Halaman Tambah Mahasiswa ---
 @ui.page('/add')
 def add_page():
+    if not app_state.current_user or app_state.current_user.role != 'admin': # Tambahkan pengecekan
+        ui.notify('Akses ditolak. Hanya admin yang bisa menambah data.', type='negative')
+        ui.navigate.to('/dashboard') # Alihkan ke dashboard
+        return
+
     set_background() # Panggil background biar konsisten
 
     if not app_state.current_user:
@@ -273,6 +280,11 @@ def add_page():
 # --- Halaman Edit/Hapus Mahasiswa ---
 @ui.page('/edit_delete')
 def edit_delete_page():
+    if not app_state.current_user or app_state.current_user.role != 'admin': # Tambahkan pengecekan
+        ui.notify('Akses ditolak. Hanya admin yang bisa mengedit atau menghapus data.', type='negative')
+        ui.navigate.to('/dashboard') # Alihkan ke dashboard
+        return
+    
     set_background() # <--- Panggil fungsi background disini
 
     if not app_state.current_user:
