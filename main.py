@@ -121,9 +121,9 @@ def dashboard_page():
             with ui.row().classes('w-72 justify-between'):
                 # Padding px-4 (dikecilin dikit dari 5 biar DELETE gak sesak)
                 if app_state.current_user.role == 'admin':
-                ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).props('color=positive unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
-                ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=warning unelevated').classes('rounded-full font-bold px-4 text-white text-sm shadow-lg')
-                ui.button('DELETE', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=negative unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
+                    ui.button('ADD', on_click=lambda: ui.navigate.to('/add')).props('color=positive unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
+                    ui.button('EDIT', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=warning unelevated').classes('rounded-full font-bold px-4 text-white text-sm shadow-lg')
+                    ui.button('DELETE', on_click=lambda: ui.navigate.to('/edit_delete')).props('color=negative unelevated').classes('rounded-full font-bold px-4 text-sm shadow-lg')
 
     # --- Tabel Data ---
     table_card = ui.card().classes('w-full mt-6 bg-white/95 backdrop-blur-sm p-0 rounded-lg shadow-2xl')
